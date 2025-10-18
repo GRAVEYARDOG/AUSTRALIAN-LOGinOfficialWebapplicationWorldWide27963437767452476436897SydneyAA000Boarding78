@@ -1,0 +1,1805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Australian Embassy Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital@1&family=Oswald:wght@500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Ultra&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    /* Global Styles */
+    * {
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background-color: #f6f9fc;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .page {
+      display: none;
+      width: 100%;
+    }
+
+    .active {
+      display: block;
+    }
+
+    /* Loader Styles */
+    @keyframes squeeze {
+      0% {
+        inset: 0 2em 2em 0;
+      }
+      12.5% {
+        inset: 0 2em 0 0;
+      }
+      25% {
+        inset: 2em 2em 0 0;
+      }
+      37.5% {
+        inset: 2em 0 0 0;
+      }
+      50% {
+        inset: 2em 0 0 2em;
+      }
+      62.5% {
+        inset: 0 0 0 2em;
+      }
+      75% {
+        inset: 0 0 2em 2em;
+      }
+      87.5% {
+        inset: 0 0 2em 0;
+      }
+      100% {
+        inset: 0 2em 2em 0;
+      }
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(-360deg);
+      }
+    }
+
+    .loader {
+      --color1: #3498db;
+      --color2: #e74c3c;
+
+      width: 3.75em;
+      aspect-ratio: 1;
+      position: relative;
+      animation: spin 10000ms infinite linear;
+    }
+
+    .loader:before,
+    .loader:after {
+      content: "";
+      position: absolute;
+      background: var(--color1);
+      animation: squeeze 3000ms infinite;
+    }
+
+    .loader:after {
+      background: var(--color2);
+      animation-delay: -1.25s;
+      border-radius: 50px;
+    }
+
+    .loader-container {
+      padding: 80px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    .loader-text {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #003366;
+      font-weight: 500;
+    }
+
+    /* Logo and Animated Text Styles */
+    .logo-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .logo-img {
+      width: 60px;
+      height: 60px;
+      margin-right: 15px;
+    }
+
+    /* Animated Text Styles */
+    :root {
+      --green: #b8d953;
+      --lilac: #b2b2eb;
+      --pink: #bb86e9;
+      --dark-green: #529a91;
+      --peach: #fe96b7;
+      --black: #191819;
+      --grey: #2a292a;
+      --white: #d9d9d9;
+    }
+
+    .bizzy {
+      display: flex;
+      align-items: center;
+      gap: 5%;
+      justify-content: space-around;
+      max-height: 60px;
+      text-align: center;
+    }
+
+    @keyframes fontGrowReverse {
+      0% {
+        transform: scaleY(2);
+      }
+      50% {
+        transform: scaleY(1);
+      }
+      100% {
+        transform: scaleY(2);
+      }
+    }
+
+    .bizzy-letters-B {
+      animation-name: fontGrowReverse;
+      animation-duration: 2s;
+      animation-iteration-count: infinite;
+      transform-origin: bottom;
+      transition-timing-function: ease-in-out;
+      font-family: "Ultra", serif;
+      font-size: 24px;
+      margin: 0;
+    }
+
+    .letter-C {
+      color: #cbe69f;
+    }
+
+    .letter-O {
+      color: #b2b2eb;
+      animation-delay: 1s;
+    }
+
+    .letter-D {
+      color: #91d1df;
+    }
+
+    .letter-I {
+      color: #f7b407;
+      animation-delay: 1s;
+    }
+
+    .letter-N {
+      color: #fe96b7;
+    }
+
+    /* Login Page Styles */
+    .login-container {
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+      max-width: 400px;
+      width: 100%;
+      padding: 40px;
+      margin: 0 auto;
+    }
+
+    .login-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .login-header h2 {
+      font-size: 22px;
+      color: #1a1a1a;
+      margin-bottom: 8px;
+    }
+
+    .login-header p {
+      color: #6b7280;
+      font-size: 14px;
+      margin: 0;
+    }
+
+    .login-form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 14px;
+      color: #111827;
+      font-weight: 500;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      border-radius: 6px;
+      border: 1px solid #d1d5db;
+      font-size: 14px;
+    }
+
+    .btn-login {
+      background-color: #68A4F1;
+      color: white;
+      font-weight: 500;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 15px;
+      transition: 0.2s ease;
+      margin-top: 10px;
+    }
+
+    .btn-login:hover {
+      background-color: #4d8eeb;
+    }
+
+    .error-message {
+      color: #dc2626;
+      font-size: 14px;
+      margin-top: 10px;
+      text-align: center;
+      display: none;
+    }
+
+    /* Dashboard Styles */
+    .dashboard-container {
+      padding: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+      /* Background image for dashboard */
+      background-image: url('images/background.jpg');
+      background-size: cover;
+      background-position: center;
+      border-radius: 12px;
+    }
+
+    /* UPDATED: Dashboard Header with Light Blue Background */
+    .dashboard-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      padding: 15px 20px;
+      background-color: #68A4F1;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+    }
+
+    .header-right {
+      position: relative;
+    }
+
+    /* Hamburger Menu Styles */
+    .hamburger-menu {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 30px;
+      height: 21px;
+      cursor: pointer;
+      z-index: 100;
+    }
+
+    .hamburger-menu span {
+      display: block;
+      height: 3px;
+      width: 100%;
+      background-color: white;
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+
+    .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+      width: 200px;
+      padding: 10px 0;
+      z-index: 99;
+      display: none;
+    }
+
+    .dropdown-menu.active {
+      display: block;
+    }
+
+    .dropdown-item {
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #333;
+      text-decoration: none;
+      transition: background-color 0.2s;
+    }
+
+    .dropdown-item:hover {
+      background-color: #f0f7ff;
+    }
+
+    .dropdown-item i {
+      width: 20px;
+      text-align: center;
+    }
+
+    /* New Dashboard Styles */
+    .dashboard-content {
+      padding: 2rem 1rem; /* Reduced padding */
+      margin: 0 auto;
+      max-width: 1200px;
+    }
+
+    .dashboard-flex {
+      display: flex;
+      flex-direction: column;
+    }
+
+    @media (min-width: 1024px) {
+      .dashboard-flex {
+        flex-direction: row;
+      }
+    }
+
+    .dashboard-left {
+      max-width: 36rem;
+      padding-right: 4rem;
+      margin: 0 auto 2.5rem;
+    }
+
+    @media (min-width: 1024px) {
+      .dashboard-left {
+        margin-bottom: 0;
+      }
+    }
+
+    .dashboard-title {
+      margin-bottom: 1.5rem;
+      font-size: 1.875rem;
+      font-weight: 800;
+      line-height: 1.2;
+    }
+
+    .dashboard-description {
+      margin-bottom: 1.5rem;
+      color: #111827;
+    }
+
+/* keep titles plain inside the card (optional) */
+.dashboard-left .dashboard-title,
+.dashboard-left .dashboard-description {
+  background: transparent;
+  display: block;
+  padding: 0;
+  margin: 0 0 0.75rem 0;
+}
+    .dashboard-actions {
+      display: flex;
+      align-items: center;
+    }
+
+    .btn-primary-large {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 3rem;
+      padding: 0 1.5rem;
+      margin-right: 1.5rem;
+      font-weight: 500;
+      color: white;
+      background-color: #68A4F1;
+      border: none;
+      border-radius: 0.375rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-primary-large:hover {
+      background-color: #4d8eeb;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .btn-link {
+      display: inline-flex;
+      align-items: center;
+      font-weight: 600;
+      color: #68A4F1;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .btn-link:hover {
+      color: #4d8eeb;
+    }
+
+    .dashboard-grid {
+      display: grid;
+      gap: 1.25rem;
+      grid-template-columns: 1fr;
+    }
+
+    @media (min-width: 640px) {
+      .dashboard-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .dashboard-card {
+      max-width: 28rem;
+      background-color: rgba(255, 255, 255, 0.85); /* Semi-transparent background */
+      border-radius: 8px;
+      padding: 15px;
+    }
+
+    .card-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 4rem;
+      height: 4rem;
+      margin-bottom: 1rem;
+      border-radius: 9999px;
+      background-color: #e0e7ff;
+    }
+
+    .card-icon svg {
+      width: 3rem;
+      height: 3rem;
+      color: #68A4F1;
+      stroke: currentColor;
+    }
+
+    .card-title {
+      margin-bottom: 0.5rem;
+      font-size: 1rem;
+      font-weight: 600;
+      line-height: 1.5;
+    }
+
+    .card-description {
+      font-size: 0.875rem;
+      color: #374151;
+      line-height: 1.5;
+    }
+
+    .btn-dashboard {
+      background-color: #68A4F1;
+      color: white;
+      font-weight: 500;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: 0.2s ease;
+      margin-top: 40px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 40px auto 0;
+    }
+
+    .btn-dashboard:hover {
+      background-color: #4d8eeb;
+    }
+
+    /* Flight Form Styles */
+    .form-container {
+      background-color: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      max-width: 480px;
+      width: 100%;
+      padding: 24px;
+      margin: 0 auto;
+    }
+
+    .form-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .form-header .icon {
+      font-size: 28px;
+      color: #0077ff;
+    }
+
+    h1 {
+      font-size: 22px;
+      margin: 0;
+      color: #1a1a1a;
+      font-weight: 600;
+    }
+
+    p.subtitle {
+      color: #6b7280;
+      font-size: 14px;
+      margin-top: 2px;
+      margin-bottom: 20px;
+    }
+
+    .section {
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 20px;
+      background-color: #fff;
+    }
+
+    .section h2 {
+      font-size: 18px;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 600;
+    }
+
+    .section h2 i {
+      color: #0077ff;
+    }
+
+    .auto-detect {
+      color: #16a34a;
+      font-size: 14px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .auto-detect i {
+      color: #16a34a;
+    }
+
+    select, input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #d1d5db;
+      margin-top: 6px;
+      font-size: 14px;
+    }
+
+    select:disabled, input:disabled {
+      background-color: #f3f4f6;
+      color: #9ca3af;
+    }
+
+    .checkbox-group {
+      margin-top: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .checkbox-group input {
+      width: 16px;
+      height: 16px;
+    }
+
+    .btn-primary {
+      width: 100%;
+      background-color: #68A4F1;
+      color: white;
+      font-weight: 500;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 15px;
+      margin-top: 20px;
+      transition: 0.2s ease;
+    }
+
+    .btn-primary:hover {
+      background-color: #4d8eeb;
+    }
+
+    .btn-primary:disabled {
+      background-color: #9ca3af;
+      cursor: not-allowed;
+    }
+
+    .btn-cancel {
+      width: 100%;
+      background: white;
+      color: #374151;
+      font-weight: 500;
+      padding: 10px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 15px;
+      margin-top: 10px;
+      transition: 0.2s ease;
+    }
+
+    .btn-cancel:hover {
+      background-color: #f9fafb;
+    }
+
+    .info-box {
+      border: 1px solid #f3f4f6;
+      border-radius: 10px;
+      padding: 16px;
+      background-color: #f9fafb;
+    }
+
+    .info-box h3 {
+      font-size: 16px;
+      font-weight: 600;
+      color: #111827;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .info-box h3 i {
+      color: #facc15;
+    }
+
+    .info-box ul {
+      list-style-type: disc;
+      padding-left: 18px;
+      margin: 0;
+      color: #374151;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .caution {
+      margin-top: 12px;
+      background-color: #fffbe6;
+      border-radius: 8px;
+      padding: 10px;
+      color: #92400e;
+      font-size: 14px;
+      border: 1px solid #fde68a;
+      display: flex;
+      align-items: start;
+      gap: 8px;
+    }
+
+    .caution i {
+      color: #f59e0b;
+    }
+
+    .error-message {
+      color: #dc2626;
+      font-size: 12px;
+      margin-top: 4px;
+      display: none;
+    }
+
+    /* Success Modal Styles */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background-color: white;
+      border-radius: 12px;
+      padding: 30px;
+      max-width: 800px; /* Increased width for better ticket display */
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .modal-title {
+      font-size: 24px;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin: 0;
+    }
+
+    .close-modal {
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: #6b7280;
+    }
+
+    .payment-caution {
+      background-color: #fef3cd;
+      border: 1px solid #fde68a;
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 20px;
+    }
+
+    .payment-caution h4 {
+      margin: 0 0 10px 0;
+      color: #92400e;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .payment-caution p {
+      margin: 0;
+      color: #92400e;
+    }
+
+    /* Ticket Styles */
+    .ticket-container {
+      display: flex;
+      justify-content: center;
+      margin: 20px 0;
+      max-height: 500px; /* Limit height for better display */
+      overflow-y: auto; /* Allow scrolling if needed */
+    }
+
+    /* Economy Ticket Styles - Fixed Layout */
+    .economy-ticket-container {
+      background: #e0e2e8;
+      position: relative;
+      width: 100%;
+      height: 575px;
+      font-family: "Open Sans", sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .economy-ticket-container .ticket {
+      position: relative;
+    }
+
+    .economy-ticket-container .basic {
+      display: none;
+    }
+
+    .economy-ticket-container .airline {
+      display: block;
+      height: 575px;
+      width: 270px;
+      box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.3);
+      border-radius: 25px;
+      z-index: 3;
+    }
+
+    .economy-ticket-container .airline .top {
+      height: 220px;
+      background: #ffcc05;
+      border-top-right-radius: 25px;
+      border-top-left-radius: 25px;
+      position: relative;
+    }
+
+    .economy-ticket-container .airline .top h1 {
+      text-transform: uppercase;
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-align: center;
+      position: absolute;
+      top: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #000;
+      margin: 0;
+    }
+
+    .economy-ticket-container .airline .bottom {
+      height: 355px;
+      background: #fff;
+      border-bottom-right-radius: 25px;
+      border-bottom-left-radius: 25px;
+    }
+
+    /* FIXED: Big section with ADD and SYD stacked vertically */
+    .economy-ticket-container .top .big {
+      position: absolute;
+      top: 80px;
+      left: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 5px;
+    }
+
+    .economy-ticket-container .top .big .from {
+      color: #ffcc05;
+      text-shadow: -1px 0 #000, 0 1px #000, 1px 0 #000, 0 -1px #000;
+      font-size: 65px;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .economy-ticket-container .top .big .to {
+      font-size: 35px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      margin-top: -80px;
+    }
+
+    .economy-ticket-container .top .big .to i {
+      margin-right: 10px;
+      font-size: 15px;
+    }
+
+    .economy-ticket-container .top .top--side {
+      position: absolute;
+      right: 35px;
+      top: 110px;
+      text-align: right;
+    }
+
+    .economy-ticket-container .top .top--side i {
+      font-size: 25px;
+      margin-bottom: 5px;
+    }
+
+    .economy-ticket-container .top .top--side p {
+      font-size: 10px;
+      font-weight: 700;
+      margin: 0;
+    }
+
+    .economy-ticket-container .top .top--side p + p {
+      margin-bottom: 8px;
+    }
+
+    .economy-ticket-container .bottom p {
+      display: flex;
+      flex-direction: column;
+      font-size: 13px;
+      font-weight: 700;
+      margin: 0;
+    }
+
+    .economy-ticket-container .bottom p span {
+      font-weight: 400;
+      font-size: 11px;
+      color: #6c6c6c;
+    }
+
+    .economy-ticket-container .bottom .column {
+      margin: 0 auto;
+      width: 80%;
+      padding: 2rem 0;
+    }
+
+    .economy-ticket-container .bottom .row {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .economy-ticket-container .bottom .row--right {
+      text-align: right;
+    }
+
+    .economy-ticket-container .bottom .row--center {
+      text-align: center;
+    }
+
+    .economy-ticket-container .bottom .row-2 {
+      margin: 30px 0 60px 0;
+      position: relative;
+    }
+
+    .economy-ticket-container .bottom .row-2::after {
+      content: "";
+      position: absolute;
+      width: 100%;
+      bottom: -30px;
+      left: 0;
+      background: #000;
+      height: 1px;
+    }
+
+    .economy-ticket-container .bottom .bar--code {
+      height: 50px;
+      width: 80%;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .economy-ticket-container .bottom .bar--code::after {
+      content: "";
+      position: absolute;
+      width: 6px;
+      height: 100%;
+      background: #000;
+      top: 0;
+      left: 0;
+      box-shadow: 10px 0 #000, 30px 0 #000, 40px 0 #000, 67px 0 #000, 90px 0 #000,
+                  100px 0 #000, 180px 0 #000, 165px 0 #000, 200px 0 #000, 210px 0 #000,
+                  135px 0 #000, 120px 0 #000;
+    }
+
+    .economy-ticket-container .bottom .bar--code::before {
+      content: "";
+      position: absolute;
+      width: 3px;
+      height: 100%;
+      background: #000;
+      top: 0;
+      left: 11px;
+      box-shadow: 12px 0 #000, -4px 0 #000, 45px 0 #000, 65px 0 #000, 72px 0 #000,
+                  78px 0 #000, 97px 0 #000, 150px 0 #000, 165px 0 #000, 180px 0 #000,
+                  135px 0 #000, 120px 0 #000;
+    }
+
+    /* VIP Class Ticket Styles */
+    .boarding-pass {
+      position: relative;
+      width: 350px;
+      height: 382px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 5px 30px rgba(0, 0, 0, .2);
+      overflow: hidden;
+      text-transform: uppercase;
+      font-family: 'Roboto', sans-serif;
+    }
+
+    .boarding-pass small {
+      display: block;
+      font-size: 11px;
+      color: #A2A9B3;
+      margin-bottom: 2px;
+    }
+
+    .boarding-pass strong {
+      font-size: 15px;
+      display: block;
+    }
+
+    .boarding-pass header {
+      background: linear-gradient(to bottom, #36475f, #2c394f);
+      padding: 12px 20px;
+      height: 53px;
+    }
+
+    .boarding-pass .logo {
+      float: left;
+      width: 104px;
+      height: 31px;
+    }
+
+    .boarding-pass .flight {
+      float: right;
+      color: #fff;
+      text-align: right;
+    }
+
+    .boarding-pass .flight small {
+      font-size: 8px;
+      margin-bottom: 2px;
+      opacity: 0.8;
+    }
+
+    .boarding-pass .flight strong {
+      font-size: 18px;
+    }
+
+    .boarding-pass .cities {
+      position: relative;
+    }
+
+    .boarding-pass .cities::after {
+      content: '';
+      display: table;
+      clear: both;
+    }
+
+    .boarding-pass .city {
+      padding: 20px 18px;
+      float: left;
+    }
+
+    .boarding-pass .city:nth-child(2) {
+      float: right;
+    }
+
+    .boarding-pass .city strong {
+      font-size: 40px;
+      font-weight: 300;
+      line-height: 1;
+    }
+
+    .boarding-pass .city small {
+      margin-bottom: 0px;
+      margin-left: 3px;
+    }
+
+    .boarding-pass .airplane {
+      position: absolute;
+      width: 30px;
+      height: 25px;
+      top: 57%;
+      left: 30%;
+      opacity: 0;
+      transform: translate(-50%, -50%);
+      animation: move 3s infinite;
+    }
+
+    @keyframes move {
+      40% {
+        left: 50%;
+        opacity: 1;
+      }
+      100% {
+        left: 70%;
+        opacity: 0;
+      }
+    }
+
+    .boarding-pass .infos {
+      display: flex;
+      border-top: 1px solid #99D298;
+    }
+
+    .boarding-pass .places,
+    .boarding-pass .times {
+      width: 50%;
+      padding: 10px 0;
+    }
+
+    .boarding-pass .places::after,
+    .boarding-pass .times::after {
+      content: '';
+      display: table;
+      clear: both;
+    }
+
+    .boarding-pass .times strong {
+      transform: scale(0.9);
+      transform-origin: left bottom;
+    }
+
+    .boarding-pass .places {
+      background: #ECECEC;
+      border-right: 1px solid #99D298;
+    }
+
+    .boarding-pass .places small {
+      color: #97A1AD;
+    }
+
+    .boarding-pass .places strong {
+      color: #239422;
+    }
+
+    .boarding-pass .box {
+      padding: 10px 20px 10px;
+      width: 47%;
+      float: left;
+    }
+
+    .boarding-pass .box small {
+      font-size: 10px;
+    }
+
+    .boarding-pass .strap {
+      clear: both;
+      position: relative;
+      border-top: 1px solid #99D298;
+    }
+
+    .boarding-pass .strap::after {
+      content: '';
+      display: table;
+      clear: both;
+    }
+
+    .boarding-pass .strap .box {
+      padding: 23px 0 20px 20px;
+    }
+
+    .boarding-pass .strap .box div {
+      margin-bottom: 15px;
+    }
+
+    .boarding-pass .strap .box small {
+      font-size: 10px;
+    }
+
+    .boarding-pass .strap .box strong {
+      font-size: 13px;
+    }
+
+    .boarding-pass .strap sup {
+      font-size: 8px;
+      position: relative;
+      top: -5px;
+    }
+
+    .boarding-pass .qrcode {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 80px;
+      height: 80px;
+      background: #2c394f;
+      border-radius: 4px;
+    }
+
+    /* Footer Styles */
+    .footer {
+      background-color: #f8f9fa;
+      padding: 20px 0;
+      text-align: center;
+      border-top: 1px solid #e9ecef;
+      margin-top: 40px;
+      color: #6c757d;
+      font-size: 14px;
+    }
+
+    .footer p {
+      margin: 5px 0;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 10px;
+    }
+
+    .footer-links a {
+      color: #6c757d;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover {
+      color: #68A4F1;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Loader Page -->
+    <div id="loader-page" class="page active">
+      <div class="loader-container">
+        <div class="loader"></div>
+        <div class="loader-text"></div>
+      </div>
+    </div>
+
+    <!-- Login Page -->
+    <div id="login-page" class="page">
+      <div class="login-container">
+        <div class="logo-container">
+          <img class="logo-img" src="images/AUSTRALIANLOGO.png" alt="Australian Embassy Logo" />
+          <div class="bizzy">
+            <p class="bizzy-letters-B letter-C">A</p>
+            <p class="bizzy-letters-B letter-O">U</p>
+            <p class="bizzy-letters-B letter-D">S</p>
+            <p class="bizzy-letters-B letter-I">T</p>
+            <p class="bizzy-letters-B letter-N">R</p>
+            <p class="bizzy-letters-B letter-C">A</p>
+            <p class="bizzy-letters-B letter-O">L</p>
+            <p class="bizzy-letters-B letter-D">I</p>
+            <p class="bizzy-letters-B letter-I">A</p>
+          </div>
+        </div>
+        <div class="login-header">
+          <h2>Web Application Portal</h2>
+          <p>Enter your credentials to access your application</p>
+        </div>
+        <form class="login-form" id="login-form">
+          <div class="form-group">
+            <label for="username">User Name</label>
+            <input type="text" id="username" placeholder="Enter your full name" required>
+          </div>
+          <div class="form-group">
+            <label for="passport">Passport ID</label>
+            <input type="text" id="passport" placeholder="Enter your passport ID" required>
+          </div>
+          <button type="submit" class="btn-login">Login to Portal</button>
+          <div class="error-message" id="login-error">
+            Invalid credentials. Please check your User Name and Passport ID.
+          </div>
+        </form>
+      </div>
+      
+      <!-- Footer for Login Page -->
+      <div class="footer">
+        <p>Australian Embassy Visa Portal</p>
+        <p>© 2023 Australian Government. All rights reserved.</p>
+        <div class="footer-links">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+          <a href="#">Contact Us</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dashboard Page -->
+    <div id="dashboard-page" class="page">
+      <div class="dashboard-container">
+        <!-- UPDATED: Dashboard Header with Light Blue Background and Hamburger Menu -->
+        <div class="dashboard-header">
+          <div class="header-left">
+            <div class="logo-container">
+              <img class="logo-img" src="images/AUSTRALIANLOGO.png" alt="Australian Embassy Logo" />
+              <div class="bizzy">
+                <p class="bizzy-letters-B letter-C">A</p>
+                <p class="bizzy-letters-B letter-O">U</p>
+                <p class="bizzy-letters-B letter-D">S</p>
+                <p class="bizzy-letters-B letter-I">T</p>
+                <p class="bizzy-letters-B letter-N">R</p>
+                <p class="bizzy-letters-B letter-C">A</p>
+                <p class="bizzy-letters-B letter-O">L</p>
+                <p class="bizzy-letters-B letter-D">I</p>
+                <p class="bizzy-letters-B letter-I">A</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="header-right">
+            <div class="hamburger-menu" id="hamburger-menu">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+            
+            <div class="dropdown-menu" id="dropdown-menu">
+              <a href="#" class="dropdown-item" id="flight-detail-form">
+                <i class="fas fa-paper-plane"></i>
+                Flight Detail Form
+              </a>
+              <a href="#" class="dropdown-item" id="logout">
+                <i class="fas fa-sign-out-alt"></i>
+                Logout
+              </a>
+            </div>
+          </div>
+        </div>
+        
+        <div class="dashboard-content">
+          <div class="dashboard-flex">
+            <div class="dashboard-left">
+              <h5 class="dashboard-title">
+                Australian Visa Application Dashboard
+              </h5>
+              <p class="dashboard-description">
+                Welcome to your comprehensive visa application portal. Track your application progress, submit required documents, and access all the information you need for your journey to Australia.
+              </p>
+              <div class="dashboard-actions">
+                <button class="btn-primary-large" id="get-started-btn">
+                  Get started
+                </button>
+                <a href="#" class="btn-link">Learn more</a>
+              </div>
+            </div>
+            <div class="dashboard-grid">
+              <div class="dashboard-card">
+                <div class="card-icon">
+                  <svg stroke="currentColor" viewBox="0 0 52 52">
+                    <polygon stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none" points="29 13 14 29 25 29 23 39 38 23 27 23"></polygon>
+                  </svg>
+                </div>
+                <h6 class="card-title">Application Status Tracking</h6>
+                <p class="card-description">
+                  Monitor your visa application progress in real-time with our comprehensive tracking system.
+                </p>
+              </div>
+              <div class="dashboard-card">
+                <div class="card-icon">
+                  <svg stroke="currentColor" viewBox="0 0 52 52">
+                    <polygon stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none" points="29 13 14 29 25 29 23 39 38 23 27 23"></polygon>
+                  </svg>
+                </div>
+                <h6 class="card-title">Document Submission</h6>
+                <p class="card-description">
+                  Easily upload and manage all required documents for your visa application in one secure location.
+                </p>
+              </div>
+              <div class="dashboard-card">
+                <div class="card-icon">
+                  <svg stroke="currentColor" viewBox="0 0 52 52">
+                    <polygon stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none" points="29 13 14 29 25 29 23 39 38 23 27 23"></polygon>
+                  </svg>
+                </div>
+                <h6 class="card-title">Health Requirements</h6>
+                <p class="card-description">
+                  Access information about medical examinations and health requirements for your Australian visa.
+                </p>
+              </div>
+              <div class="dashboard-card">
+                <div class="card-icon">
+                  <svg stroke="currentColor" viewBox="0 0 52 52">
+                    <polygon stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none" points="29 13 14 29 25 29 23 39 38 23 27 23"></polygon>
+                  </svg>
+                </div>
+                <h6 class="card-title">Travel Preparation</h6>
+                <p class="card-description">
+                  Get ready for your journey with essential information about Australian customs, laws, and culture.
+                </p>
+              </div>
+            </div>
+          </div>
+          
+          <button class="btn-dashboard" id="flight-form-btn">
+            <i class="fas fa-paper-plane"></i> Submit Flight Information
+          </button>
+        </div>
+      </div>
+      
+      <!-- Footer for Dashboard -->
+      <div class="footer">
+        <p>Australian Embassy Visa Portal</p>
+        <p>© 2023 Australian Government. All rights reserved.</p>
+        <div class="footer-links">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+          <a href="#">Contact Us</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Flight Information Form Page -->
+    <div id="flight-form-page" class="page">
+      <div class="form-container">
+        <div class="form-header">
+          <i class="fa-solid fa-paper-plane icon"></i>
+          <div>
+            <h1>Flight Information Form</h1>
+            <p class="subtitle">Submit your flight details for travel to Australia</p>
+          </div>
+        </div>
+
+        <form id="flightForm">
+          <div class="section">
+            <h2><i class="fa-solid fa-earth-americas"></i> Flight Details</h2>
+            <p class="auto-detect"><i class="fa-solid fa-location-dot"></i> Location auto-detected</p>
+
+            <div class="checkbox-group">
+              <input type="checkbox" id="autoDetect" checked>
+              <label for="autoDetect" style="font-weight:400;">Auto-detect departure city using my location</label>
+            </div>
+
+            <label for="departure">Departure City *</label>
+            <select id="departure" required>
+              <option value="">Select departure city</option>
+              <option value="Dire Dawa" selected>Dire Dawa</option>
+              <option value="Addis Ababa">Addis Ababa</option>
+              <option value="Nairobi">Nairobi</option>
+              <option value="Dubai">Dubai</option>
+            </select>
+            <div class="error-message" id="departureError">Please select a departure city</div>
+
+            <label for="destination">Destination City</label>
+            <input type="text" id="destination" value="Sydney, Australia" disabled>
+            <p style="color:#6b7280; font-size:13px; margin-top:2px;">Fixed destination: Sydney, Australia</p>
+
+            <label for="airline">Airline *</label>
+            <select id="airline" required>
+              <option value="">Select airline</option>
+              <option value="Ethiopian Airlines">Ethiopian Airlines</option>
+              <option value="Qantas Airways">Qantas Airways</option>
+              <option value="Emirates">Emirates</option>
+              <option value="Singapore Airlines">Singapore Airlines</option>
+            </select>
+            <div class="error-message" id="airlineError">Please select an airline</div>
+
+            <label for="class">Travel Class *</label>
+            <select id="class" required>
+              <option value="Economy">Economy</option>
+              <option value="VIP Class">VIP Class</option>
+            </select>
+
+            <button type="submit" class="btn-primary" id="submitBtn">Submit Flight Details →</button>
+            <button type="button" class="btn-cancel" onclick="goToDashboard()">Back to Dashboard</button>
+          </div>
+        </form>
+
+        <div class="info-box">
+          <h3><i class="fa-solid fa-circle-exclamation"></i> Important Information</h3>
+          <ul>
+            <li>Your flight details will be used for border control preparation in Australia</li>
+            <li>Ensure all information matches your actual booking</li>
+            <li>You can update these details later if needed</li>
+            <li>Form data is auto-saved as you type</li>
+          </ul>
+          <div class="caution">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            CAUTION: Submit your flight details at least 7 days before departure to ensure processing time.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Success Modal -->
+  <div class="modal-overlay" id="success-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Flight Details Submitted Successfully!</h2>
+        <button class="close-modal" onclick="closeSuccessModal()">&times;</button>
+      </div>
+      
+      <div class="payment-caution">
+        <h4><i class="fas fa-exclamation-triangle"></i> Payment Required</h4>
+        <p id="payment-message">Please complete your payment within 72 hours to confirm your booking.</p>
+      </div>
+      
+      <div id="ticket-container" class="ticket-container">
+        <!-- Ticket will be inserted here based on class selection -->
+      </div>
+      
+      <button class="btn-primary" onclick="closeSuccessModal()" style="margin-top: 20px;">Continue to Dashboard</button>
+    </div>
+  </div>
+
+  <script>
+    // Page navigation functions
+    function showPage(pageId) {
+      document.querySelectorAll('.page').forEach(page => {
+        page.classList.remove('active');
+      });
+      document.getElementById(pageId).classList.add('active');
+    }
+
+    function goToDashboard() {
+      showPage('dashboard-page');
+    }
+
+    function closeSuccessModal() {
+      document.getElementById('success-modal').style.display = 'none';
+      goToDashboard();
+    }
+
+    // Loader functionality
+    window.addEventListener('load', function() {
+      setTimeout(function() {
+        showPage('login-page');
+      }, 30000); // 30 seconds
+    });
+
+    // Login functionality - UPDATED WITH 5-SECOND LOADER
+    document.getElementById('login-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const username = document.getElementById('username').value;
+      const passport = document.getElementById('passport').value;
+      const errorElement = document.getElementById('login-error');
+      
+      // Check credentials
+      if (username === "LETIFA TAHIR MOHAMMED" && passport === "EP8903463") {
+        // Show loader page with authentication message
+        showPage('loader-page');
+        document.querySelector('.loader-text').textContent = 'Authenticating credentials...';
+        
+        // Show dashboard after 5 seconds
+        setTimeout(function() {
+          showPage('dashboard-page');
+        }, 5000);
+      } else {
+        errorElement.style.display = 'block';
+      }
+    });
+
+    // Dashboard to Flight Form navigation
+    document.getElementById('flight-form-btn').addEventListener('click', function() {
+      showPage('flight-form-page');
+    });
+
+    // Get Started button functionality (non-functional)
+    document.getElementById('get-started-btn').addEventListener('click', function(e) {
+      e.preventDefault();
+      // No functionality - button is non-functional as requested
+    });
+
+    // NEW: Hamburger menu functionality
+    const hamburgerMenu = document.getElementById('hamburger-menu');
+    const dropdownMenu = document.getElementById('dropdown-menu');
+    const flightDetailForm = document.getElementById('flight-detail-form');
+    const logoutBtn = document.getElementById('logout');
+
+    // Toggle dropdown menu
+    hamburgerMenu.addEventListener('click', function(e) {
+      e.stopPropagation();
+      dropdownMenu.classList.toggle('active');
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function() {
+      dropdownMenu.classList.remove('active');
+    });
+
+    // Flight Detail Form navigation
+    flightDetailForm.addEventListener('click', function(e) {
+      e.preventDefault();
+      dropdownMenu.classList.remove('active');
+      showPage('flight-form-page');
+    });
+
+    // Logout functionality
+    logoutBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      dropdownMenu.classList.remove('active');
+      showPage('login-page');
+    });
+
+    // Flight Form functionality
+    const autoDetect = document.getElementById('autoDetect');
+    const departure = document.getElementById('departure');
+    const flightForm = document.getElementById('flightForm');
+    const submitBtn = document.getElementById('submitBtn');
+
+    // Initialize form state
+    departure.disabled = true;
+
+    autoDetect.addEventListener('change', () => {
+      if (autoDetect.checked) {
+        departure.value = 'Dire Dawa';
+        departure.disabled = true;
+        hideError('departureError');
+      } else {
+        departure.disabled = false;
+      }
+    });
+
+    // Add real-time validation
+    const requiredFields = ['departure', 'airline'];
+    
+    requiredFields.forEach(field => {
+      const element = document.getElementById(field);
+      if (element) {
+        element.addEventListener('blur', () => validateField(field));
+        element.addEventListener('input', () => hideError(field + 'Error'));
+      }
+    });
+
+    function validateField(field) {
+      const element = document.getElementById(field);
+      const errorElement = document.getElementById(field + 'Error');
+      
+      if (!element.value.trim()) {
+        showError(field + 'Error');
+        return false;
+      } else {
+        hideError(field + 'Error');
+        return true;
+      }
+    }
+
+    function showError(errorId) {
+      const errorElement = document.getElementById(errorId);
+      if (errorElement) {
+        errorElement.style.display = 'block';
+      }
+    }
+
+    function hideError(errorId) {
+      const errorElement = document.getElementById(errorId);
+      if (errorElement) {
+        errorElement.style.display = 'none';
+      }
+    }
+
+    function submitForm(event) {
+      if (event) event.preventDefault();
+      
+      // Validate all fields
+      const isDepartureValid = validateField('departure');
+      const isAirlineValid = validateField('airline');
+      const travelClass = document.getElementById('class').value;
+      
+      if (isDepartureValid && isAirlineValid) {
+        // Show loader for 30 seconds before showing modal
+        showPage('loader-page');
+        document.querySelector('.loader-text').textContent = 'Processing your flight details...';
+        
+        setTimeout(function() {
+          // Show success modal after 30 seconds
+          const modal = document.getElementById('success-modal');
+          const paymentMessage = document.getElementById('payment-message');
+          const ticketContainer = document.getElementById('ticket-container');
+          
+          // Set payment message based on class
+          if (travelClass === 'Economy') {
+            paymentMessage.textContent = 'Please complete your payment of 200AUD within 72 hours to confirm your booking.';
+            // Show Economy ticket with exact HTML structure
+            ticketContainer.innerHTML = `
+              <div class="economy-ticket-container">
+                <div class="ticket basic">
+                  <p>Admit One</p>
+                </div>
+                <div class="ticket airline">
+                  <div class="top">
+                    <h1>boarding ticket</h1>
+                    <br/>
+                    <br/>
+                    <h2>------------------------</h2>
+                    <div class="big">
+                      <p class="from">ADD</p>
+                      <p class="to"><i class="fas fa-arrow-right"></i> SYD</p>
+                    </div>
+                    <div class="top--side">
+                      <i class="fas fa-plane"></i>
+                      <p>Addis Ababa</p>
+                      <p>Sydney</p>
+                    </div>
+                  </div>
+                  <div class="bottom">
+                    <div class="column">
+                      <div class="row row-1">
+                        <p><span>Flight</span>ET2005</p>
+                        <p class="row--right"><span>Gate</span>B3</p>
+                      </div>
+                      <div class="row row-2">
+                        <p><span>Boards</span>10:25 AM</p>
+                        <p class="row--center"><span>Departs</span>11:00 AM</p>
+                        <p class="row--right"><span>Arrives</span>1:05 PM</p>
+                      </div>
+                      <div class="row row-3">
+                        <p><span>Passenger</span>LETIFA TAHIR MOHAMMED</p>
+                        <p class="row--center"><span>Seat</span>11E</p>
+                        <p class="row--right"><span>Group</span>3</p>
+                      </div>
+                    </div>
+                    <div class="bar--code"></div>
+                  </div>
+                </div>
+              </div>
+            `;
+          } else {
+            paymentMessage.textContent = 'Please complete your payment of 340AUD within 72 hours to confirm your booking.';
+            // Show VIP Class ticket with correct logo image
+            ticketContainer.innerHTML = `
+              <div class="boarding-pass">
+                <header>
+                  <img class="logo" src="data:image/png;base64,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" />
+                  <div class="flight">
+                    <small>flight</small>
+                    <strong>ET 101</strong>
+                  </div>
+                </header>
+                <section class="cities">
+                  <div class="city">
+                    <small>Ethiopia</small>
+                    <strong>ETH</strong>
+                  </div>
+                  <div class="city">
+                    <small>Australia</small>
+                    <strong>AUS</strong>
+                  </div>
+                  <svg class="airplane">
+                    <use xlink:href="#airplane"></use>
+                  </svg>
+                </section>
+                <section class="infos">
+                  <div class="places">
+                    <div class="box">
+                      <small>Terminal</small>
+                      <strong><em>W</em></strong>
+                    </div>
+                    <div class="box">
+                      <small>Gate</small>
+                      <strong><em>C3</em></strong>
+                    </div>
+                    <div class="box">
+                      <small>Seat</small>
+                      <strong>14B</strong>
+                    </div>
+                    <div class="box">
+                      <small>Class</small>
+                      <strong>V</strong>
+                    </div>
+                  </div>
+                  <div class="times">
+                    <div class="box">
+                      <small>Boarding</small>
+                      <strong>11:05</strong>
+                    </div>
+                    <div class="box">
+                      <small>Departure</small>
+                      <strong>11:35</strong>
+                    </div>
+                    <div class="box">
+                      <small>Duration</small>
+                      <strong>2:15</strong>
+                    </div>
+                    <div class="box">
+                      <small>Arrival</small>
+                      <strong>13:50</strong>
+                    </div>
+                  </div>
+                </section>
+                <section class="strap">
+                  <div class="box">
+                    <div class="passenger">
+                      <small>passenger</small>
+                      <strong>LETIFA TAHIR MOHAMMED</strong>
+                    </div>
+                  </div>
+                  <div class="qrcode"></div>
+                </section>
+              </div>
+            `;
+          }
+          
+          modal.style.display = 'flex';
+          showPage('flight-form-page');
+          
+          // In a real application, you would send data to a server here
+          console.log('Flight form submitted with data:', {
+            departure: departure.value,
+            airline: document.getElementById('airline').value,
+            travelClass: travelClass
+          });
+        }, 30000); // 30 seconds
+      }
+    }
+
+    // Add form submit event listener
+    flightForm.addEventListener('submit', submitForm);
+  </script>
+</body>
+</html>
